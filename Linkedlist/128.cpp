@@ -15,14 +15,16 @@ public:
     Node *head = NULL;
     void create(int *, int, int);
     void find_loop();
+    void find_starting_point();
     void display();
 };
 int main()
 {
     int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     Linkedlist a;
-    a.create(arr, 10, 6);
+    a.create(arr, 10, 9);
     a.find_loop();
+    a.find_starting_point();
     // a.display();
 
     return 0;
@@ -45,7 +47,6 @@ void Linkedlist ::create(int arr[], int n, int key)
     if (!head)
     {
         head = new Node;
-        cout << "Enter the data : ";
         head->data = arr[0];
         tail = head;
         cout << "\n";
@@ -65,7 +66,7 @@ void Linkedlist ::create(int arr[], int n, int key)
         temp = NULL;
         i++;
     }
-    // tail->next = loop_node;
+    tail->next = loop_node;
 }
 
 void Linkedlist ::find_loop()
@@ -74,4 +75,12 @@ void Linkedlist ::find_loop()
         cout<<"True";
     else
         cout<<"False";
+    cout<<"\n";
+}
+
+void Linkedlist :: find_starting_point()
+{
+    Node*t=tail->next;
+    if(tail->next)
+        cout<<"Starting point of Loop is "<<t->data<<"\n";
 }
