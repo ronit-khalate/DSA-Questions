@@ -152,6 +152,9 @@ void Linkedlist ::reverse_list(Node *h, int key)
     this->head = b;
     a = NULL;
     b = NULL;
+    Node*new_tail=c; // !current c is going to be tail of new reversed list's tail
+                     // ! but we cant change this->tail at this point because second half list haven't reversed yet
+                     // ! so we have to save current "c" so we can reassigne it to this->tail 
     while (c)
     {
         a = b;
@@ -161,4 +164,5 @@ void Linkedlist ::reverse_list(Node *h, int key)
     }
 
     tail_of_first_reversed_list->next = b;
+    this->tail=new_tail; // * reassigned this->tail to new tail node
 }
