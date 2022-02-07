@@ -30,7 +30,6 @@ int main()
     Linkedlist a;
     a.create(arr, 12);
     a.reverse_list(4);
-    // a.group(4, a.head);
     a.display();
 
     return 0;
@@ -73,7 +72,7 @@ vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
     // * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12
     /**
      * * This function will create groups of node depending on key  it will save address of
-     * * starting node and ending node of each group in pair<Nodo*,Node*> and then it'll 
+     * * starting node and ending node of each group in pair<Node*,Node*> and then it'll 
      * * push back that pair in vector 
      * ! Now we have vector containing address of Nodes Of each group's Starting and ending Nodes
      *
@@ -92,12 +91,12 @@ vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
             * for last group's ending Node
         */
        
-
+        // * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12
     while (head)
     {
         first = head;
 
-        for (i = 1; i < key && head; i++)
+        for (i = 1; i < key && head; i++) // TODO :: change contion head to head->next
         {
             tail = head;
             head = head->next;
@@ -111,6 +110,7 @@ vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
         {
             second = tail; //!saving last groups ending node(at this point head is null and tail is at last node)
         }
+        pair<Node*,Node*> a
         vec.push_back(make_pair(first, second));// ! creating pair and pushing back in vector
         if (head)
         {
