@@ -20,15 +20,17 @@ class Linkedlist
 public:
     Node *head = NULL;
     void create(int *, int);
-    void reverse_list(Node *, int);
+    void reverse_list(int);
     void display();
+    vector<pair<Node *, Node *>> &group(int, Node *);
 };
 int main()
 {
-    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int arr[12] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     Linkedlist a;
-    a.create(arr, 10);
-    a.reverse_list(a.head, 1);
+    a.create(arr, 12);
+    a.reverse_list(4);
+    // a.group(4, a.head);
     a.display();
 
     return 0;
@@ -42,7 +44,6 @@ void Linkedlist ::display()
         cout << temp->data << " ";
         temp = temp->next;
     }
-    cout << "\n";
 }
 
 void Linkedlist ::create(int arr[], int n)
@@ -67,102 +68,78 @@ void Linkedlist ::create(int arr[], int n)
     }
 }
 
-void Linkedlist ::reverse_list(Node *h, int key)
+vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
 {
-    /*
-        ! first half
-        ? key=3
-        ? 1->2->3->4->5->6->7->8->9->10
-        * a=NULL,b=NULL ,c = h;
-        *a=b
-        *b=c
-        *c=c->next
-        *b->next=a
-        ! loop 1
-        * a=b (a=null)
-        * b=c (b=1)
-        * c=c->next (c=2)
-        * b->next=a (null<-1)
-        ! loop 2
-        * a=b (a=1)
-        * b=c (b=2)
-        * c=c->next (c=3)
-        * b->next=a (null<-1<-2)
-        ! loop 3
-        * a=b (a=2)
-        * b=c (b=3)
-        * c=c->next (c=4)
-        * b->next=a (null<-1<-2<-3<-4)
-        
-        * first reversed list ( key =4) 4->3->2->1->NULL
-        * NOW b=4 and b is going to be head of our list so we have to assigne our this->head=b
+    // * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12
+    static vector<pair<Node *, Node *>> vec;
+    int i = 1;
+    Node *first = NULL;
+    Node *second = NULL;
+    Node *tail = NULL;
 
-    
-        !second half
-        *c=5
-        *a=b
-        *b=c
-        *c=c->next
-        *b->next=a
-        ! loop 1
-        * a=b (a=null)
-        * b=c (b=5)
-        * c=c->next (c=6)
-        * b->next=a (null<-5  6->7->8->9->10)
-        ! loop 2
-        * a=b (a=5)
-        * b=c (b=6)
-        * c=c->next (c=7)
-        * b->next=a (null<-5<-6  7->8->9->10)
-        ! loop 3
-        * a=b (a=6)
-        * b=c (b=7)
-        * c=c->next (c=8)
-        * b->next=a (null<-5<-6<-7   8->9->10 )
-        ! loop 4
-        * a=b (a=7)
-        * b=c (b=8)
-        * c=c->next (c=9)
-        * b->next=a (null<-5<-6<-7<-8   9->10 )
-        ! loop 5
-        * a=b (a=8)
-        * b=c (b=9)
-        * c=c->next (c=10)
-        * b->next=a (null<-5<-6<-7<-8<-9   10 )
-        ! loop 6
-        * a=b (a=9)
-        * b=c (b=10)
-        * c=c->next (c=null)
-        * b->next=a (null<-5<-6<-7<-8<-9<-10    )
-    
-        * now we have reversed our second half list in this case from  5 to 10
-        * now b =10 and b is head for this second half list
-        * 
-    */
-    Node *a = NULL, *b = NULL, *c = h, *t, *tail_of_first_reversed_list = h;
-    do
+    while (head)
     {
+        first = head;
 
-        a = b;
-        b = c;
-        c = c->next;
-        b->next = a;
+        for (i = 1; i < key && head; i++)
+        {
+            tail = head;
+            head = head->next;
+        }
+        if (head)
+        {
 
-    } while (b->data != key);
-    this->head = b;
-    a = NULL;
-    b = NULL;
-    Node*new_tail=c; // !current c is going to be tail of new reversed list's tail
-                     // ! but we cant change this->tail at this point because second half list haven't reversed yet
-                     // ! so we have to save current "c" so we can reassigne it to this->tail 
-    while (c)
-    {
-        a = b;
-        b = c;
-        c = c->next;
-        b->next = a;
+            second = head;
+        }
+        else
+        {
+            second = tail;
+        }
+        vec.push_back(make_pair(first, second));
+        if (head)
+        {
+            tail = head;
+            head = head->next;
+        }
     }
 
-    tail_of_first_reversed_list->next = b;
-    this->tail=new_tail; // * reassigned this->tail to new tail node
+    return vec;
+}
+
+void Linkedlist ::reverse_list(int key)
+{
+    vector<pair<Node *, Node *>> v = group(key, head);
+    int i = 0;
+    Node *h, *t;
+    while (i < v.size())
+    {
+        h = v[i].first;
+        t = v[i].second;
+        Node *a = NULL;
+        Node *b = NULL;
+        Node *c = h;
+        while (b != t)
+        {
+            a = b;
+            b = c;
+            c = c->next;
+            b->next = a;
+        }
+        i++;
+    }
+
+    int k = 0;
+    Node *j = NULL;
+    while (k < v.size())
+    {
+        if (j)
+        {
+
+            j->next = v[k].second;
+        }
+        j = v[k].first;
+        k++;
+    }
+
+    head = v[0].second;
 }
