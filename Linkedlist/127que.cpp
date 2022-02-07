@@ -22,7 +22,7 @@ public:
     void create(int *, int);
     void reverse_list(int);
     void display();
-    vector<pair<Node *, Node *>> &group(int, Node *);
+    vector<pair<Node *, Node *>> &group(int, Node *); 
 };
 int main()
 {
@@ -71,11 +71,27 @@ void Linkedlist ::create(int arr[], int n)
 vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
 {
     // * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12
-    static vector<pair<Node *, Node *>> vec;
+    /**
+     * * This function will create groups of node depending on key  it will save address of
+     * * starting node and ending node of each group in pair<Nodo*,Node*> and then it'll 
+     * * push back that pair in vector 
+     * ! Now we have vector containing address of Nodes Of each group's Starting and ending Nodes
+     *
+     */
+    static vector<pair<Node *, Node *>> vec;  // * vector of pair to save add of nodes
     int i = 1;
     Node *first = NULL;
     Node *second = NULL;
-    Node *tail = NULL;
+    Node *tail = NULL; // ! tail pointer of head
+
+    // ?Use of Tail Pointer?
+        /*
+            * for last group we want save last node as ending node but the trasversal
+            * will continue until head becomes NULL as you can we are saving head in second
+            * but for last during last group head becomes NULL So thats why tail pointer is use 
+            * for last group's ending Node
+        */
+       
 
     while (head)
     {
@@ -93,13 +109,13 @@ vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
         }
         else
         {
-            second = tail;
+            second = tail; //!saving last groups ending node(at this point head is null and tail is at last node)
         }
-        vec.push_back(make_pair(first, second));
+        vec.push_back(make_pair(first, second));// ! creating pair and pushing back in vector
         if (head)
         {
             tail = head;
-            head = head->next;
+            head = head->next; //! assining head to the starting node of next group
         }
     }
 
@@ -111,15 +127,24 @@ void Linkedlist ::reverse_list(int key)
     vector<pair<Node *, Node *>> v = group(key, head);
     int i = 0;
     Node *h, *t;
-    while (i < v.size())
+    while (i < v.size()) 
     {
-        h = v[i].first;
-        t = v[i].second;
+        /**
+         * ! this loop wil revers all links of each group of Nodes
+         * ! ex:- key=4 therefor 1->2->3->4 will become 1<-2<-3<-4
+         * !                     5->6->7->8 will become 5<-6<-7<-8
+         * !                     9->10->11->12 will become 9<-10<-11<-12
+         */
+        h = v[i].first; // * head node of i th group
+        t = v[i].second;// * tail node of i th group
+
         Node *a = NULL;
         Node *b = NULL;
         Node *c = h;
+        // * Node * a *b,*c are pointer to reverse linkes
         while (b != t)
         {
+            // ! iterative linkedlist reverse method
             a = b;
             b = c;
             c = c->next;
@@ -132,6 +157,21 @@ void Linkedlist ::reverse_list(int key)
     Node *j = NULL;
     while (k < v.size())
     {
+        /**
+         * * this loop will join the links of k th group's starting node
+         * * to k+1 th group's ending node
+         * ! Example :- now we have reversed groups
+         * !            1<-2<-3<-4
+         * !            5<-6<-7<-8
+         * !            9<-10<-11<-12
+         * 
+         * * so this loop will join 
+         * *        1->next to 8
+         * *        5->next to 12
+         * *        9->next to NULL
+         * 
+         * * at the end we reassing this->head to 4
+         */
         if (j)
         {
 
@@ -141,5 +181,5 @@ void Linkedlist ::reverse_list(int key)
         k++;
     }
 
-    head = v[0].second;
+    head = v[0].second; // * reassiging this->head to first group's ending node (which is now head node)
 }
