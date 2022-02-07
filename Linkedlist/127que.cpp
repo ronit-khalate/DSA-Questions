@@ -22,7 +22,7 @@ public:
     void create(int *, int);
     void reverse_list(int);
     void display();
-    vector<pair<Node *, Node *>> &group(int, Node *); 
+    vector<pair<Node *, Node *>> &group(int, Node *);
 };
 int main()
 {
@@ -77,45 +77,37 @@ vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
      * ! Now we have vector containing address of Nodes Of each group's Starting and ending Nodes
      *
      */
-    static vector<pair<Node *, Node *>> vec;  // * vector of pair to save add of nodes
+    static vector<pair<Node *, Node *>> vec; // * vector of pair to save add of nodes
     int i = 1;
     Node *first = NULL;
     Node *second = NULL;
     Node *tail = NULL; // ! tail pointer of head
 
     // ?Use of Tail Pointer?
-        /*
+    /*
             * for last group we want save last node as ending node but the trasversal
             * will continue until head becomes NULL as you can we are saving head in second
             * but for last during last group head becomes NULL So thats why tail pointer is use 
             * for last group's ending Node
         */
-       
-        // * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12
+
+    // * 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12
     while (head)
     {
         first = head;
 
-        for (i = 1; i < key && head; i++) // TODO :: change contion head to head->next
+        for (i = 1; i < key && head->next; i++) // TODO :: change contion head to head->next
         {
             tail = head;
             head = head->next;
         }
-        if (head)
-        {
 
-            second = head;
-        }
-        else
-        {
-            second = tail; //!saving last groups ending node(at this point head is null and tail is at last node)
-        }
-        vec.push_back(make_pair(first, second));// ! creating pair and pushing back in vector
-        if (head)
-        {
-            tail = head;
-            head = head->next; //! assining head to the starting node of next group
-        }
+        second = head;
+
+        vec.push_back(make_pair(first, second)); // ! creating pair and pushing back in vector
+
+        tail = head;
+        head = head->next; //! assining head to the starting node of next group
     }
 
     return vec;
@@ -126,7 +118,7 @@ void Linkedlist ::reverse_list(int key)
     vector<pair<Node *, Node *>> v = group(key, head);
     int i = 0;
     Node *h, *t;
-    while (i < v.size()) 
+    while (i < v.size())
     {
         /**
          * ! this loop wil revers all links of each group of Nodes
@@ -134,8 +126,8 @@ void Linkedlist ::reverse_list(int key)
          * !                     5->6->7->8 will become 5<-6<-7<-8
          * !                     9->10->11->12 will become 9<-10<-11<-12
          */
-        h = v[i].first; // * head node of i th group
-        t = v[i].second;// * tail node of i th group
+        h = v[i].first;  // * head node of i th group
+        t = v[i].second; // * tail node of i th group
 
         Node *a = NULL;
         Node *b = NULL;
