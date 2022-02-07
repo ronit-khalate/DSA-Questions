@@ -71,6 +71,7 @@ void Linkedlist ::find_dublicate()
      * 
      * 
      */
+    
     while (temp)
     {
         auto i=s.insert(temp->data);
