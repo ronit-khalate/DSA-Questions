@@ -1,3 +1,7 @@
+
+// ? Sort a LL of 0's, 1's and 2's
+
+
 #include <bits/stdc++.h>
 using namespace std;
 class Node
@@ -19,7 +23,7 @@ public:
 int main()
 {
     Linkedlist a;
-    vector<int> arr = {1, 2, 2, 0, 0, 2, 1, 1, 0, 1, 2, 2, 2, 1, 0, 1, 1, 2, 2, 2};
+    vector<int> arr = {2,2,2,2,2,2,2,2,2,2};
     a.create(arr);
     a.sort();
     a.display();
@@ -49,12 +53,12 @@ void Linkedlist ::sort()
     Node *two = NULL;
     Node *zero = NULL;
     Node *temp = head;
-    Node *first = head;
+    Node *first;
     Node *tail = NULL;
     Node *curr;
-    Node *zero_head;
-    Node *one_head;
-    Node *two_head;
+    Node *zero_head= NULL;
+    Node *one_head= NULL;
+    Node *two_head= NULL;
     int j = 0, k = 0, l = 0;
     while (temp)
     {
@@ -86,7 +90,7 @@ void Linkedlist ::sort()
             if (!one || one->next == temp)
             {
                 one = temp;
-                if (k = 1)
+                if (k != 1)
                 {
                     one_head = one;
                     k++;
@@ -127,11 +131,38 @@ void Linkedlist ::sort()
         tail = temp;
         temp = temp->next;
     }
-    zero->next = one_head;
-    one->next = two_head;
-    this->tail = two;
-    this->head = zero_head;
-    two->next = NULL;
+    if(zero_head)
+    {
+        this->head=zero_head;
+        first=zero;
+        if(one_head)
+        {
+            zero->next=one_head;
+            first=one;
+        }
+        if(two_head)
+        {
+            one->next=two;
+            first=two;
+        }
+        this->tail=first;
+    }
+    else if(one_head)
+    {
+        this->head=one_head;
+        first=one;
+        if(two_head)
+        {
+            one->next=two;
+            first=two;
+        }
+        this->tail=first;
+    }
+    else
+    {
+        this->head=two_head;
+        this->tail=two;
+    }
 }
 
 void Linkedlist ::display()
