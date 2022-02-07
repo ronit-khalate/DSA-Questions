@@ -110,7 +110,6 @@ vector<pair<Node *, Node *>> &Linkedlist ::group(int key, Node *head)
         {
             second = tail; //!saving last groups ending node(at this point head is null and tail is at last node)
         }
-        pair<Node*,Node*> a
         vec.push_back(make_pair(first, second));// ! creating pair and pushing back in vector
         if (head)
         {
