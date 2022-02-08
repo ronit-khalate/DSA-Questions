@@ -23,7 +23,7 @@ public:
 int main()
 {
     Linkedlist a;
-    vector<int> arr = {2,2,2,2,2,2,2,2,2,2};
+    vector<int> arr ={};
     a.create(arr);
     a.sort();
     a.display();
@@ -62,7 +62,7 @@ void Linkedlist ::sort()
     int j = 0, k = 0, l = 0;
     while (temp)
     {
-        // * 1,2,2,0,0,2,1,1,0
+        // * 0,2,0,2,0,2,0,2,0,2,0,2
         if (temp->data == 0)
         {
             if (!zero || zero->next == temp)
@@ -84,7 +84,7 @@ void Linkedlist ::sort()
                 temp = tail;
             }
         }
-        // * 1,2,2,0,0,2,1,1,0
+        // * 0,2,0,2,0,2,0,2,0,2,0,2
         else if (temp->data == 1)
         {
             if (!one || one->next == temp)
@@ -107,7 +107,7 @@ void Linkedlist ::sort()
             }
         }
         else
-        // * 1,2,2,0,0,2,1,1,0
+        // * 0,2,0,2,0,2,0,2,0,2,0,2
         {
             if (!two || two->next == temp)
             {
@@ -142,9 +142,10 @@ void Linkedlist ::sort()
         }
         if(two_head)
         {
-            one->next=two;
+            first->next=two_head;
             first=two;
         }
+        first->next=NULL;
         this->tail=first;
     }
     else if(one_head)
@@ -153,9 +154,10 @@ void Linkedlist ::sort()
         first=one;
         if(two_head)
         {
-            one->next=two;
+            one->next=two_head;
             first=two;
         }
+        first->next=NULL;
         this->tail=first;
     }
     else
