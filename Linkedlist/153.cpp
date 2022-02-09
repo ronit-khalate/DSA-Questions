@@ -25,7 +25,7 @@ public:
 int main()
 {
     Linkedlist a;
-    vector<int> arr = {5,10,15,20,21};
+    vector<int> arr = {5, 10, 19, 28};
     a.create(arr);
     a.fatten_list(a.head);
     a.display();
@@ -54,24 +54,39 @@ void Linkedlist ::create(vector<int> v)
 }
 void Linkedlist ::create_b(Node *temp)
 {
-    set<int> a;
+    vector<int> s;
     Node *tail = temp, *head;
     cout << "Enter value greater that " << temp->data << "\n";
     cout << "Enter -1 To stop "
          << "\n";
 
     int x, z = 0;
-    cin >> x;
-    for (int i = 0; x != -1; i++)
+    while (true)
     {
-        a.insert(x);
         cin >> x;
+        if (x < temp->data || x == -1)
+        {
+            if (x ==-1)
+            {
+                break;
+            }
+            else
+            {
+                cout << "Enter data greater than " << temp->data << "\n";
+            }
+        }
+        else
+        {
+            s.push_back(x);
+        }
     }
-    for (auto it : a)
+    sort(s.begin(), s.end()); // *sorting data for bottom list
+    for (int i = 0; i < s.size(); i++)
     {
+        /* code */
 
         Node *c = new Node;
-        c->data = it;
+        c->data = s[i];
         head = c;
         tail->bottom = c;
         tail = c;
@@ -102,7 +117,7 @@ void Linkedlist ::fatten_list(Node *head)
         else
             temp->bottom = b_tail->bottom;
         b_tail->bottom = NULL;
-        b_tail->next=NULL;
+        b_tail->next = NULL;
         b_head = covert_b_list(b_head, b_tail);
         if (limit->next)
             b_tail->next = limit;
@@ -129,7 +144,7 @@ pair<Node *, Node *> Linkedlist ::find_limit(Node *temp)
                 if (tail->data < temp->bottom->data && curr->data < temp->bottom->data)
                     return make_pair(curr, curr);
                 else
-                    return  make_pair(curr,tail);
+                    return make_pair(curr, tail);
             }
         }
         tail = curr;
