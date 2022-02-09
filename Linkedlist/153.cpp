@@ -66,7 +66,7 @@ void Linkedlist ::create_b(Node *temp)
         cin >> x;
         if (x < temp->data || x == -1)
         {
-            if (x ==-1)
+            if (x == -1)
             {
                 break;
             }
@@ -120,10 +120,24 @@ void Linkedlist ::fatten_list(Node *head)
         b_tail->next = NULL;
         b_head = covert_b_list(b_head, b_tail);
         if (limit->next)
+        {
+
             b_tail->next = limit;
+            curr->next = b_head;
+        }
         else
-            b_tail->next = NULL;
-        curr->next = b_head;
+        {
+            if (curr == limit)
+            {
+                b_tail->next = limit->next;
+            }
+            else
+            {
+                b_tail->next = curr->next;
+            }
+
+            curr->next = b_head;
+        }
     }
     fatten_list(temp->next);
 }
@@ -186,4 +200,6 @@ void Linkedlist ::display()
         cout << temp->data << " -> ";
         temp = temp->next;
     }
+    cout<<" NULL";  
+    cout<<"\n";
 }
