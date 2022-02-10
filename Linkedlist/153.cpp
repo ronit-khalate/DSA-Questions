@@ -16,9 +16,7 @@ public:
     void create(vector<int>);
     void create_b(Node *);
     void fatten_list(Node *);
-    pair<Node *, Node *> find_limit(Node *);
-    Node *find_b_tail(Node *, Node *);
-    Node *covert_b_list(Node *, Node *);
+    Node*find_targets_position(Node*);
     void display();
 };
 
@@ -95,102 +93,47 @@ void Linkedlist ::create_b(Node *temp)
 
 void Linkedlist ::fatten_list(Node *head)
 {
-    Node *temp = head;
-    Node *b_head, *b_tail, *curr;
-    if (!temp->next || !temp->bottom)
+    Node*base_node=head;
+    while (base_node)
     {
-        if (!temp->next)
-            return;
-        else
-            fatten_list(temp->next);
-    }
-    while (temp->bottom)
-    {
-        pair<Node *, Node *> l;
-        l = find_limit(temp);
-        Node *limit = l.first;
-        curr = l.second;
-        b_head = temp->bottom;
-        b_tail = find_b_tail(temp->bottom, limit);
-        if (curr == temp)
-            curr->bottom = b_tail->bottom;
-        else
-            temp->bottom = b_tail->bottom;
-        b_tail->bottom = NULL;
-        b_tail->next = NULL;
-        b_head = covert_b_list(b_head, b_tail);
-        if (limit->next)
+        while (base_node->bottom)
         {
+            Node*target=base_node->bottom;
+            Node*position_of_target=find_targets_position(target);
+            base_node->bottom=target->bottom;
+            target->bottom=NULL;
+            target->next=position_of_target->next;
+            position_of_target->next=target;
 
-            b_tail->next = limit;
-            curr->next = b_head;
         }
-        else
+        base_node=base_node->next;
+        
+    }
+    
+}
+
+Node*Linkedlist ::find_targets_position(Node*target)
+{
+    Node*position=NULL,*position_head=head;
+
+    while (position_head)
+    {
+        if(position_head->data>target->data)
         {
-            if (curr == limit)
-            {
-                b_tail->next = limit->next;
-            }
+            if(position)
+                return position;
             else
-            {
-                b_tail->next = curr->next;
-            }
-
-            curr->next = b_head;
+                return position_head;
         }
+        position=position_head;
+        position_head=position_head->next;
     }
-    fatten_list(temp->next);
+    return position;
 }
 
-pair<Node *, Node *> Linkedlist ::find_limit(Node *temp)
-{
-    Node *curr = temp;
-    Node *tail = NULL;
-    while (curr)
-    {
-        if (!curr->next || temp->bottom->data < curr->data) // TODO : change to temp->bottom->data <= curr->data
-        {
-            if (curr->next)
-                return make_pair(curr, tail);
-            else
-            {
 
-                if (tail->data < temp->bottom->data && curr->data < temp->bottom->data)
-                    return make_pair(curr, curr);
-                else
-                    return make_pair(curr, tail);
-            }
-        }
-        tail = curr;
-        curr = curr->next;
-    }
-}
 
-Node *Linkedlist ::find_b_tail(Node *temp, Node *limit)
-{
 
-    while (temp)
-    {
-        if (!temp->bottom || temp->bottom->data > limit->data)
-        {
-            return temp;
-        }
-        temp = temp->bottom;
-    }
-}
-
-Node *Linkedlist ::covert_b_list(Node *b_head, Node *b_tail)
-{
-    Node *temp = b_head;
-    while (temp->bottom)
-    {
-        temp->next = temp->bottom;
-        temp->bottom = NULL;
-        temp = temp->next;
-    }
-
-    return b_head;
-}
 
 void Linkedlist ::display()
 {
