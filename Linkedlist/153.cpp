@@ -17,6 +17,7 @@ public:
     void create_b(Node *);
     void fatten_list(Node *);
     Node*find_targets_position(Node*);
+    queue <Node*>save_base_list(Node*);
     void display();
 };
 
@@ -93,7 +94,9 @@ void Linkedlist ::create_b(Node *temp)
 
 void Linkedlist ::fatten_list(Node *head)
 {
-    Node*base_node=head;
+    queue<Node*>a=save_base_list(head);
+    Node*base_node=a.front();
+    a.pop();
     while (base_node)
     {
         while (base_node->bottom)
@@ -106,7 +109,8 @@ void Linkedlist ::fatten_list(Node *head)
             position_of_target->next=target;
 
         }
-        base_node=base_node->next;
+        base_node=a.front();
+        a.pop();
         
     }
     
@@ -131,7 +135,20 @@ Node*Linkedlist ::find_targets_position(Node*target)
     return position;
 }
 
+queue<Node*> Linkedlist ::save_base_list(Node*head)
+{
+    Node*temp=head;
+    queue<Node*> a;
 
+    while (temp)
+    {
+        a.push(temp);
+        temp=temp->next;
+    }
+    a.push(NULL);
+    return a;
+    
+}
 
 
 
